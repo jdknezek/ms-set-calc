@@ -1,18 +1,17 @@
-import m from "mithril";
-import * as Monster from "../game/Monster";
 import * as Calculator from "../Calculator";
+import * as Monster from "../game/Monster";
+import m from "mithril";
 
-type Attrs = {
+export interface Attrs {
   calculator: Calculator.Calculator;
 }
 
-type State = {
+export interface State {
   search: string;
 }
 
 export const Pets: m.Component<Attrs, State> = {
-  view({ attrs, state }) {
-    const { calculator } = attrs;
+  view({ attrs: { calculator }, state }) {
     const monsters = Monster.byID
       .slice(1)
       .filter(monster => !state.search || monster.name.indexOf(state.search.toUpperCase()) !== -1)
@@ -25,16 +24,15 @@ export const Pets: m.Component<Attrs, State> = {
       }),
       ` (${(100 * calculator.collection.pets.length / (Monster.byID.length - 1)).toFixed(1)}%)`,
       m('br'),
-      monsters.map(monster => m('label', {
-        class: `tag ${!calculator.collection.has(monster) ? 'missing' : calculator.filter.filterEquipment(monster) ? 'collected' : 'filtered'}`
-      }, m('input[type=checkbox]', {
-        checked: calculator.collection.has(monster),
-        onchange: m.withAttr('checked', checked => {
-          if (!!checked) calculator.collection.add(monster);
-          else calculator.collection.remove(monster);
+      monsters.map(monster => m('span', {
+        class: `tag ${calculator.collection.has(monster) ? 'collected' : ''} ${calculator.filter.filterEquipment(monster) ? 'contributing' : ''}`,
+        onclick: (_e: any) => {
+          if (calculator.collection.has(monster)) calculator.collection.remove(monster)
+          else calculator.collection.add(monster);
           calculator.collection.save();
-        })
-      }),
+          calculator.invalidatePets();
+        }
+      },
         monster.name
       ))
     );

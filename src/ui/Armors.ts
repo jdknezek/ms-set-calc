@@ -1,18 +1,17 @@
-import m from "mithril";
 import * as Armor from "../game/Armor";
 import * as Calculator from "../Calculator";
+import m from "mithril";
 
-type Attrs = {
+export interface Attrs {
   calculator: Calculator.Calculator;
 }
 
-type State = {
+export interface State {
   search: string;
 }
 
 export const Armors: m.Component<Attrs, State> = {
-  view({ attrs, state }) {
-    const { calculator } = attrs;
+  view({ attrs: { calculator }, state }) {
     const armors = Armor.byID
       .slice(1)
       .filter(armor => !state.search || armor.name.indexOf(state.search.toUpperCase()) !== -1)
@@ -25,16 +24,15 @@ export const Armors: m.Component<Attrs, State> = {
       }),
       ` (${(100 * calculator.collection.armors.length / (Armor.byID.length - 1)).toFixed(1)}%)`,
       m('br'),
-      armors.map(armor => m('label', {
-        class: `tag ${!calculator.collection.has(armor) ? 'missing' : calculator.filter.filterEquipment(armor) ? 'collected' : 'filtered'}`
-      }, m('input[type=checkbox]', {
-        checked: calculator.collection.has(armor),
-        onchange: m.withAttr('checked', checked => {
-          if (!!checked) calculator.collection.add(armor);
-          else calculator.collection.remove(armor);
+      armors.map(armor => m('span', {
+        class: `tag ${calculator.collection.has(armor) ? 'collected' : ''} ${calculator.filter.filterEquipment(armor) ? 'contributing' : ''}`,
+        onclick: (_e: any) => {
+          if (calculator.collection.has(armor)) calculator.collection.remove(armor)
+          else calculator.collection.add(armor);
           calculator.collection.save();
-        })
-      }),
+          calculator.invalidateArmors();
+        }
+      },
         armor.name
       ))
     );

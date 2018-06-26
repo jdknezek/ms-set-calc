@@ -1,4 +1,6 @@
-export type Record = {[column: string]: string}
+export interface Record {
+  [column: string]: string
+}
 
 export function parseText(text: string) {
   const lines = text

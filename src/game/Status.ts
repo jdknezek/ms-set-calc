@@ -13,12 +13,10 @@ export class Status {
   accessory: Accessory.Accessory;
   pet: Monster.Monster;
   skillCalcMap: SkillCalcMap;
-  skills: Skill.Skill[];
-  skillLevels: number[];
+  skillLevels: Skill.SkillLevel[];
 
   constructor() {
     this.skillCalcMap = new SkillCalcMap();
-    this.skills = new Array(3);
     this.skillLevels = new Array(3);
     this.reset();
   }
@@ -31,8 +29,10 @@ export class Status {
     this.pet = Monster.byID[0];
     this.resetSkillCalcMap();
     for (let i = 0; i < 3; i++) {
-      this.skills[i] = Skill.byID[0];
-      this.skillLevels[i] = 1;
+      this.skillLevels[i] = {
+        skill: Skill.byID[0],
+        level: 1
+      };
     }
   }
 
@@ -73,18 +73,19 @@ export class Status {
 
     this.skillCalcMap.sort();
     let skillIndex = 0;
-    for (let entry of this.skillCalcMap.entries) {
-      const {skill} = entry;
+    for (let item of this.skillCalcMap.items) {
+      const {skill, level} = item;
       if (skill.id === 0) {
         continue;
       }
-      if (entry.count >= skill.needNum) {
-        this.skills[skillIndex] = skill;
-        this.skillLevels[skillIndex] = 1;
+      if (level >= skill.needNum) {
+        const skillLevel = this.skillLevels[skillIndex];
+        skillLevel.skill = skill;
+        skillLevel.level = 1;
         if (skill.levelupInterval > 0) {
-          this.skillLevels[skillIndex] += Math.floor((entry.count - skill.needNum) / skill.levelupInterval);
-          if (this.skillLevels[skillIndex] > skill.maxLevel) {
-            this.skillLevels[skillIndex] = skill.maxLevel;
+          skillLevel.level += Math.floor((level - skill.needNum) / skill.levelupInterval);
+          if (skillLevel.level > skill.maxLevel) {
+            skillLevel.level = skill.maxLevel;
           }
         }
         skillIndex++;
@@ -95,67 +96,53 @@ export class Status {
     }
 
     for (let i = skillIndex; i < 3; i++) {
-      this.skills[i] = Skill.byID[0];
-      this.skillLevels[i] = 1;
+      this.skillLevels[i].skill = Skill.byID[0];
+      this.skillLevels[i].level = 1;
     }
 
-    if (this.skills[1].id !== 0 && (this.skills[0].id === 0 || this.skills[0].id > this.skills[1].id)) {
-      this.swapSkillArray(0, 1);
-    }
-
-    if (this.skills[2].id !== 0 && (this.skills[1].id === 0 || this.skills[1].id > this.skills[2].id)) {
-      this.swapSkillArray(1, 2);
-    }
-
-    if (this.skills[1].id !== 0 && (this.skills[0].id === 0 || this.skills[0].id > this.skills[1].id)) {
-      this.swapSkillArray(0, 1);
-    }
-  }
-
-  swapSkillArray(i: number, j: number) {
-    var tempSkill = this.skills[i];
-    var tempLevel = this.skillLevels[i];
-    this.skills[i] = this.skills[j];
-    this.skillLevels[i] = this.skillLevels[j];
-    this.skills[j] = tempSkill;
-    this.skillLevels[j] = tempLevel;
+    this.skillLevels.sort((a, b) => a.skill.id === 0
+      ? b.skill.id === 0
+        ? 0
+        : 1
+      : b.skill.id === 0
+        ? -1
+        : a.skill.id - b.skill.id
+    );
   }
 }
 
-type SkillCalcMapEntry = {
+interface SkillCalcMapItem extends Skill.SkillLevel {
   sequence: number;
-  skill: Skill.Skill;
-  count: number;
 }
 
 class SkillCalcMap {
-  entries: SkillCalcMapEntry[];
+  items: SkillCalcMapItem[];
 
   constructor() {
     this.reset();
   }
 
   reset() {
-    this.entries = [];
+    this.items = [];
   }
 
   add(skill: Skill.Skill) {
-    for (let entry of this.entries) {
-      if (entry.skill === skill) {
-        entry.count++;
+    for (let item of this.items) {
+      if (item.skill === skill) {
+        item.level++;
         return;
       }
     }
-    this.entries.push({
-      sequence: this.entries.length,
+    this.items.push({
+      sequence: this.items.length,
       skill,
-      count: 1,
+      level: 1,
     });
   }
 
   sort() {
-    this.entries.sort((a, b) => {
-      let comparison = b.count - a.count;
+    this.items.sort((a, b) => {
+      let comparison = b.level - a.level;
       if (comparison !== 0) return comparison;
       return a.sequence - b.sequence;
     })

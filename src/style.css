@@ -17,16 +17,16 @@ body, input, select {
   display: none;
 }
 
-.tag.missing {
+.tag.collected {
+  background-color: #ffa;
+}
+
+.tag.contributing {
   background-color: #fcc;
 }
 
-.tag.collected {
+.tag.collected.contributing {
   background-color: #cfc;
-}
-
-.tag.filtered {
-  background-color: #ffc;
 }
 
 table {

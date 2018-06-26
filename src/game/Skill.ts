@@ -44,6 +44,11 @@ export class Skill {
   }
 }
 
+export interface SkillLevel {
+  skill: Skill;
+  level: number;
+}
+
 export const byID = Data.parseText(
   require('fs').readFileSync(`${__dirname}/data/skills.csv`, 'utf8')
 ).map(record => new Skill(record));

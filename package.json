@@ -11,5 +11,10 @@
   "browserslist": [
     "last 2 chrome versions",
     "last 2 firefox versions"
-  ]
+  ],
+  "scripts": {
+    "build": "parcel build --public-url /ms-set-calc src/index.html",
+    "watch": "parcel watch --public-url /ms-set-calc src/index.html",
+    "serve": "parcel serve src/index.html"
+  }
 }

@@ -1,18 +1,8 @@
-import * as Accessory from "./game/Accessory";
 import * as Armor from "./game/Armor";
-import * as Calculator from "./Calculator";
 import * as Combo from "./game/Combo";
-import * as Monster from "./game/Monster";
-import * as Shield from "./game/Shield";
 import * as Skill from "./game/Skill";
 import * as Status from "./game/Status";
 import * as Weapon from "./game/Weapon";
-import * as Iter from "./Iter";
-
-export type SkillLevel = {
-  skill: Skill.Skill,
-  level: number
-}
 
 interface Equipment {
   id: number;
@@ -20,10 +10,10 @@ interface Equipment {
 }
 
 export class Filter {
-  skills: SkillLevel[];
+  skillLevels: Skill.SkillLevel[];
 
   constructor() {
-    this.skills = [
+    this.skillLevels = [
       { skill: Skill.byID[0], level: 1 },
       { skill: Skill.byID[0], level: 1 },
       { skill: Skill.byID[0], level: 1 }
@@ -31,7 +21,7 @@ export class Filter {
   }
 
   hasAnySkill(skills: Skill.Skill[]) {
-    return this.skills.some(({ skill }) => skills.indexOf(skill) !== -1);
+    return this.skillLevels.some(({skill}) => skill.id !== 0 && skills.indexOf(skill) !== -1);
   }
 
   comboHasAnySkill(weaponID: number, armorID: number) {
@@ -63,9 +53,12 @@ export class Filter {
   }
 
   checkStatus(status: Status.Status) {
-    return this.skills.every(({ skill, level }) => {
-      const index = status.skills.indexOf(skill);
-      return index !== -1 && status.skillLevels[index] >= level;
+    return this.skillLevels.every(({ skill, level }) => {
+      if (skill.id === 0) {
+        return true;
+      }
+      const skillLevel = status.skillLevels.find(skillLevel => skillLevel.skill === skill);
+      return skillLevel != null && skillLevel.level >= level;
     });
   }
 }

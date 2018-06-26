@@ -4,13 +4,11 @@ import * as Monster from "./game/Monster";
 import * as Shield from "./game/Shield";
 import * as Weapon from "./game/Weapon";
 
-console.log(Weapon);
-
 interface Equipment {
   id: number;
 }
 
-type Save = {
+interface Save {
   weaponIDs: number[];
   armorIDs: number[];
   shieldIDs: number[];
