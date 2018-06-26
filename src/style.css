@@ -1,0 +1,46 @@
+body, input, select {
+  font-family: 'Fira Sans';
+  font-size: 16px;
+}
+
+.tag {
+  display: inline-block;
+  margin: 2px;
+  padding: 0.25em 0.25em 0.15em 0.25em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.tag input[type=checkbox] {
+  display: none;
+}
+
+.tag.missing {
+  background-color: #fcc;
+}
+
+.tag.collected {
+  background-color: #cfc;
+}
+
+.tag.filtered {
+  background-color: #ffc;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+  background-color: #eee;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+td, th {
+  padding: 0.25em;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "ms-set-calc",
+  "version": "0.0.1",
+  "dependencies": {
+    "@types/mithril": "^1.1.12",
+    "@types/node": "^10.3.5",
+    "mithril": "^1.1.6",
+    "parcel": "^1.9.2",
+    "typescript": "^3.0.0-dev.20180619"
+  },
+  "browserslist": [
+    "last 2 chrome versions",
+    "last 2 firefox versions"
+  ]
+}

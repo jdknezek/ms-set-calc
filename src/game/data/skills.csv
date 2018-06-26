@@ -1,0 +1,65 @@
+﻿skillId,skillType,nameEng,nameJpn,needNum,levelupInterval,levelupValue,maxLevel,infoEng,infoJpn
+0,0,-,－,1,0,0,1,-,－
+1,2,HP,最大HP,2,1,5,6,MAX HP UP,最大HPが上がる
+2,2,ATK,物攻,2,1,5,6,PHYSICAL ATTACK UP,物理攻撃力が上がる
+3,2,DEF,物防,2,1,5,6,PHYSICAL DEFENSE UP,物理防御力が上がる
+4,2,INT,属攻,2,1,5,6,ELEMENTAL ATTACK UP,属性攻撃力が上がる
+5,2,MEN,属防,2,1,5,6,ELEMENTAL DEFENSE UP,属性防御力が上がる
+6,2,SPD,速さ,2,1,5,6,SPEED UP,速さが上がる
+7,2,LUK,運気,2,1,5,6,LUCKY UP,運気が上がる
+8,1,FIRE,火属性,2,1,10,4,FIRE ELEMENTAL UP,火属性値が上がる
+9,1,WATER,水属性,2,1,10,4,WATER ELEMENTAL UP,水属性値が上がる
+10,1,LEAF,木属性,2,1,10,4,LEAF ELEMENTAL UP,木属性値が上がる
+11,1,LIGHT,光属性,2,1,10,4,LIGHT ELEMENTAL UP,光属性値が上がる
+12,1,DARK,闇属性,2,1,10,4,DARK ELEMENTAL UP,闇属性値が上がる
+13,3,MOVE,移動速度,2,1,5,6,MOVE SPEED LV UP,移動速度Lvが上がる
+14,3,TACKLE,衝突耐性,2,1,5,6,TACKLE LV UP,衝突耐性Lvが上がる
+15,5,LUCKY PUNCH,ラッキーパンチ,2,1,1,5,ENHANCEMENT OF ATK BY LUK,幸運が物攻に影響する
+16,5,ACROBAT,曲芸,2,1,1,5,ENHANCEMENT OF ATK BY SPD,敏捷が物攻に影響する
+17,5,BODYSLAM,体当たり,2,1,1,5,ENHANCEMENT OF ATK BY VIT,体力が物攻に影響する
+18,5,TACTICS,戦術,2,1,1,5,ENHANCEMENT OF ATK BY INT,知力が物攻に影響する
+19,5,FENG SHUI,風水術,2,1,1,5,ENHANCEMENT OF LUK BY INT,知力が運気に影響する
+20,5,HEAT SABER,ヒートセイバー,2,1,1,5,ENHANCEMENT OF ATK BY FIRE,火属性値が物攻に影響する
+21,5,AQUA SABER,アクアセイバー,2,1,1,5,ENHANCEMENT OF ATK BY WATER,水属性値が物攻に影響する
+22,5,EARTH SABER,アースセイバー,2,1,1,5,ENHANCEMENT OF ATK BY LEAF,地属性値が物攻に影響する
+23,5,HOLY SABER,ホーリーセイバー,2,1,1,5,ENHANCEMENT OF ATK BY LIGHT,光属性値が物攻に影響する
+24,5,BLACK SABER,ブラックセイバー,2,1,1,5,ENHANCEMENT OF ATK BY DARK,闇属性値が物攻に影響する
+25,5,HEAT WALL,ヒートウォール,2,1,1,5,ENHANCEMENT OF DEF BY FIRE,火属性値が物防に影響する
+26,5,AQUA WALL,アクアウォール,2,1,1,5,ENHANCEMENT OF DEF BY WATER,水属性値が物防に影響する
+27,5,EARTH WALL,アースウォール,2,1,1,5,ENHANCEMENT OF DEF BY LEAF,地属性値が物防に影響する
+28,5,HOLY WALL,ホーリーウォール,2,1,1,5,ENHANCEMENT OF DEF BY LIGHT,光属性値が物防に影響する
+29,5,BLACK WALL,ブラックウォール,2,1,1,5,ENHANCEMENT OF DEF BY DARK,闇属性値が物防に影響する
+30,5,COUNTER,カウンター,2,1,1,5,DAMAGE TO EACH OTHER,ダメージ時敵にもダメージを与える
+31,5,REFLECTION,ダメージ反射,2,1,1,5,REFLECT DAMAGE,受けたダメージを相手にも与える
+32,5,RECOVERY MAGIC,回復魔法,2,1,1,3,RECOV AT KILL (WEAPON LV),敵を倒す時にHP回復 (武器Lv依存)
+33,5,SPONTANEOUS RECOVERY,自然回復,2,1,1,3,RECOV OVER TIME (ARMOR LV),時間経過でHP回復 (防具Lv依存)
+34,5,PROTECTION RECOVERY,守護回復,2,1,1,3,RECOV AT LV UP (SHIELD LV),Ｌｖアップ時にHP回復 (盾Lv依存)
+35,4,POISON ATTACK,毒攻撃,2,2,5,6,REDUCE THE DEF & MEN,敵の防御力を下げる
+36,4,STUN ATTACK,麻痺攻撃,2,2,5,6,DELAY THE ENEMYS ATTACK,敵の攻撃待機時間をリセットする
+37,2,CRITICAL,クリティカル率,2,1,5,6,INCREASE CRITICAL HIT,クリティカルヒット率が上がる
+38,2,EXP,経験値,2,2,5,6,EXP UP,獲得経験値が上がる
+39,2,DROP RATIO,ドロップ確率,2,2,5,6,INCREASE DROP PROBABILITY,宝箱のドロップ確率が上がる
+40,1,GOLD DROP,お金ドロップ,2,1,1,6,INCREASE DROP GOLD,倒した敵から得られるＧが上がる
+41,6,DEATH MARCH,デスマーチ,2,0,0,1,AUTO MOVE,進行方向に軽く入力すると自動移動
+42,6,PROVOKE,挑発,2,0,0,1,ENEMIES EVERYWHERE,敵の出現率が上がる
+43,6,RUSH,突進,3,0,0,1,POWER UP BY KEEP ON MOVING,前進し続けることで攻撃力が上がる
+44,6,ESCAPE,逃げ腰,2,0,0,1,KNOCKBACK AT ATK IS LARGE,攻撃時のノックバックが大きくなる
+45,6,GUTS,根性,2,0,0,1,MAY AVOID DEATH,確率で即死を回避する
+46,6,FULL GUARD,フルガード,3,0,0,1,DEF UP & ATK DOWN,物攻を犠牲にして物防が上がる
+47,6,NO GUARD,ノーガード,3,0,0,1,ATK UP & DEF DOWN,物防を犠牲にして物攻が上がる
+48,6,WALL,ウォール,3,0,0,1,DEF UP & MEN DOWN,属防を犠牲にして物防が上がる
+49,6,MAGIC BARRIER,マジックバリア,3,0,0,1,MEN UP & DEF DOWN,物防を犠牲にして属防が上がる
+50,6,MINDLESSLY,必死,3,0,0,1,SPD UP & INT MEN DOWN,属攻・防を犠牲にして速さが上がる
+51,6,LUK ASSIGNMENT,運も実力,4,0,0,1,LUK DOWN & OTHER UP,運気を他のステータス値に変換する
+52,6,WEAK UP,弱点特効,2,0,0,1,STRONG AGAINST WEAKNESS,弱点属性に与えるダメージが増える
+53,6,RESISTANCE UP,耐性強化,2,0,0,1,OVERCOME THE WEAKNESSES,弱点属性から受けるダメージが減る
+54,5,SURPRISE ATTACK,不意打ち,2,1,1,3,POWERFUL FIRST HIT,初撃で与える物理ダメージが増える
+55,5,FINISH ATTACK,とどめ,2,1,1,3,POWERFUL LAST HIT,最後に与える物理ダメージが増える
+56,6,RANDOM ATTACK,ランダムアタック,2,0,0,1,RANDOM ATTACK DAMAGE,物理ダメージがランダムにばらつく
+57,5,POWER STEP,パワーステップ,2,1,1,3,STEP ATTACK DAMAGE UP,移動開始時の物理ダメージが増える
+58,6,SPEED STEP,スピードステップ,2,0,0,1,STEP MOVE SPEED UP,移動開始時の移動性能が上がる
+59,6,VERVE,元気,2,0,0,1,POWER UP NEAR MAX HP,残りＨＰが多いほど攻撃力が上がる
+60,6,RAGE,怒り,2,0,0,1,POWER UP NEAR DEATH,ＨＰが減るほど攻撃力が増える
+61,6,GUARD POSE,ガードポーズ,3,0,0,1,GUARD STATE AT NEUTRAL,未入力時にガード体制をとる
+62,6,LOVELY,甘えん坊,3,0,0,1,KING SPOILS YOU,王様が優しくしてくれる
+63,6,THIEVES EYE,盗賊の目,1,0,0,1,DISPLAY DROP INFORMATION,敵のドロップ情報が確認できる
