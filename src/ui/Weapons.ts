@@ -22,7 +22,17 @@ export const Weapons: m.Component<Attrs, State> = {
         value: state.search,
         oninput: m.withAttr('value', value => state.search = value)
       }),
-      ` (${(100 * calculator.collection.weapons.length / (Weapon.byID.length - 1)).toFixed(1)}%)`,
+      ` (${(100 * calculator.collection.weapons.length / (Weapon.byID.length - 1)).toFixed(1)}%) `,
+      m('span.tag', {
+        onclick: (_e: any) => {
+          if (calculator.collection.weapons.length < Weapon.byID.length - 1) {
+            calculator.collection.weapons = Weapon.byID.slice(1);
+          } else {
+            calculator.collection.weapons = [];
+          }
+          calculator.invalidateWeapons();
+        },
+      }, 'All'),
       m('br'),
       weapons.map(weapon => m('span', {
         class: `tag ${calculator.collection.has(weapon) ? 'collected' : ''} ${calculator.filter.filterEquipment(weapon) ? 'contributing' : ''}`,

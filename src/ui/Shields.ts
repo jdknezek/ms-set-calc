@@ -22,7 +22,17 @@ export const Shields: m.Component<Attrs, State> = {
         value: state.search,
         oninput: m.withAttr('value', value => state.search = value)
       }),
-      ` (${(100 * calculator.collection.shields.length / (Shield.byID.length - 1)).toFixed(1)}%)`,
+      ` (${(100 * calculator.collection.shields.length / (Shield.byID.length - 1)).toFixed(1)}%) `,
+      m('span.tag', {
+        onclick: (_e: any) => {
+          if (calculator.collection.shields.length < Shield.byID.length - 1) {
+            calculator.collection.shields = Shield.byID.slice(1);
+          } else {
+            calculator.collection.shields = [];
+          }
+          calculator.invalidateShields();
+        },
+      }, 'All'),
       m('br'),
       shields.map(shield => m('span', {
         class: `tag ${calculator.collection.has(shield) ? 'collected' : ''} ${calculator.filter.filterEquipment(shield) ? 'contributing' : ''}`,

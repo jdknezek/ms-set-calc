@@ -22,7 +22,17 @@ export const Armors: m.Component<Attrs, State> = {
         value: state.search,
         oninput: m.withAttr('value', value => state.search = value)
       }),
-      ` (${(100 * calculator.collection.armors.length / (Armor.byID.length - 1)).toFixed(1)}%)`,
+      ` (${(100 * calculator.collection.armors.length / (Armor.byID.length - 1)).toFixed(1)}%) `,
+      m('span.tag', {
+        onclick: (_e: any) => {
+          if (calculator.collection.armors.length < Armor.byID.length - 1) {
+            calculator.collection.armors = Armor.byID.slice(1);
+          } else {
+            calculator.collection.armors = [];
+          }
+          calculator.invalidateArmors();
+        },
+      }, 'All'),
       m('br'),
       armors.map(armor => m('span', {
         class: `tag ${calculator.collection.has(armor) ? 'collected' : ''} ${calculator.filter.filterEquipment(armor) ? 'contributing' : ''}`,

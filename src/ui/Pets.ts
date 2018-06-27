@@ -22,7 +22,17 @@ export const Pets: m.Component<Attrs, State> = {
         value: state.search,
         oninput: m.withAttr('value', value => state.search = value)
       }),
-      ` (${(100 * calculator.collection.pets.length / (Monster.byID.length - 1)).toFixed(1)}%)`,
+      ` (${(100 * calculator.collection.pets.length / (Monster.byID.length - 1)).toFixed(1)}%) `,
+      m('span.tag', {
+        onclick: (_e: any) => {
+          if (calculator.collection.pets.length < Monster.byID.length - 1) {
+            calculator.collection.pets = Monster.byID.slice(1);
+          } else {
+            calculator.collection.pets = [];
+          }
+          calculator.invalidatePets();
+        },
+      }, 'All'),
       m('br'),
       monsters.map(monster => m('span', {
         class: `tag ${calculator.collection.has(monster) ? 'collected' : ''} ${calculator.filter.filterEquipment(monster) ? 'contributing' : ''}`,
