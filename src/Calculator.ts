@@ -1,10 +1,12 @@
 import * as Accessory from "./game/Accessory";
 import * as Armor from "./game/Armor";
 import * as Collection from "./Collection";
+import * as Element from "./game/Element";
 import * as Monster from "./game/Monster";
 import * as Shield from "./game/Shield";
 import * as Skill from "./game/Skill";
 import * as SkillFilter from "./SkillFilter";
+import * as Stat from "./game/Stat";
 import * as Status from "./game/Status";
 import * as Weapon from "./game/Weapon";
 
@@ -15,6 +17,9 @@ export interface Set {
   accessory: Accessory.Accessory;
   pet: Monster.Monster;
   skills: Skill.SkillLevel[];
+  weight: number,
+  stats: Stat.Stats;
+  elements: Element.Elements;
 }
 
 function makeSet(status: Status.Status): Set {
@@ -24,7 +29,10 @@ function makeSet(status: Status.Status): Set {
     shield: status.shield,
     accessory: status.accessory,
     pet: status.pet,
-    skills: status.skillLevels.map(({skill, level}) => ({skill, level}))
+    skills: status.skillLevels,
+    weight: status.weight,
+    stats: status.stats,
+    elements: status.elements
   };
 }
 

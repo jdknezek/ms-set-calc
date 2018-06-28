@@ -6,7 +6,7 @@ export interface Attrs {
   calculator: Calculator.Calculator;
 }
 
-export interface State {
+interface State {
   search: string;
 }
 
@@ -30,6 +30,7 @@ export const Weapons: m.Component<Attrs, State> = {
           } else {
             calculator.collection.weapons = [];
           }
+          calculator.collection.save();
           calculator.invalidateWeapons();
         },
       }, 'All'),

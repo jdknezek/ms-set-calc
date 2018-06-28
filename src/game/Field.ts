@@ -7,8 +7,8 @@ class Field {
 
   constructor(record: Data.Record) {
     this.distance = +record.startDistance;
-    this.monsterIDs = Data.parseIDs(record.encount1st2nd3rd)
-      .concat(Data.parseIDs(record.encount4th5thBoss))
+    this.monsterIDs = Data.parseInts(record.encount1st2nd3rd, 3)
+      .concat(Data.parseInts(record.encount4th5thBoss, 3))
       .filter(id => id !== 0);
   }
 }

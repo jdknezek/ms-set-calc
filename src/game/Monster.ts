@@ -1,18 +1,24 @@
 import * as Data from "./Data";
+import * as Element from "./Element";
 import * as Skill from "./Skill";
+import * as Stat from "./Stat";
 
 export class Monster {
   id: number;
   name: string;
   rarity: number;
+  stats: Stat.Stats;
+  elements: Element.Elements;
   skills: Skill.Skill[];
   distance: number;
 
   constructor(record: Data.Record) {
     this.id = +record.monsterId;
     this.name = record.nameEng;
-    this.rarity = +record.lukExpRare.slice(7, 10);
-    this.skills = Skill.byIDs(record.petSkill1st2nd3rd);
+    this.rarity = Data.parseInt(record.lukExpRare, 6, 3);
+    this.stats = Stat.decode(record.petStatus1st2nd3rd);
+    this.elements = Element.decode(record.petElm1st2nd3rd);
+    this.skills = Skill.decode(record.petSkill1st2nd3rd);
   }
 }
 

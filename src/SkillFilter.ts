@@ -21,7 +21,7 @@ export class Filter {
   }
 
   hasAnySkill(skills: Skill.Skill[]) {
-    return this.skillLevels.some(({skill}) => skill.id !== 0 && skills.indexOf(skill) !== -1);
+    return this.skillLevels.some(({ skill }) => skill.id !== 0 && skills.indexOf(skill) !== -1);
   }
 
   comboHasAnySkill(weaponID: number, armorID: number) {

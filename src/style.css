@@ -41,6 +41,10 @@ tr:hover {
   background-color: #ddd;
 }
 
+th {
+  cursor: pointer;
+}
+
 td, th {
   padding: 0.25em;
 }

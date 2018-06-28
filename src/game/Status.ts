@@ -1,9 +1,11 @@
 import * as Accessory from "./Accessory";
 import * as Armor from "./Armor";
 import * as Combo from "./Combo";
+import * as Element from "./Element";
 import * as Monster from "./Monster";
 import * as Shield from "./Shield";
 import * as Skill from "./Skill";
+import * as Stat from "./Stat";
 import * as Weapon from "./Weapon";
 
 export class Status {
@@ -12,69 +14,92 @@ export class Status {
   shield: Shield.Shield;
   accessory: Accessory.Accessory;
   pet: Monster.Monster;
+
+  stats: Stat.Stats;
+  weight: number;
+  elements: Element.Elements;
   skillCalcMap: SkillCalcMap;
   skillLevels: Skill.SkillLevel[];
 
   constructor() {
-    this.skillCalcMap = new SkillCalcMap();
-    this.skillLevels = new Array(3);
-    this.reset();
-  }
-
-  reset() {
     this.weapon = Weapon.byID[0];
     this.armor = Armor.byID[0];
     this.shield = Shield.byID[0];
     this.accessory = Accessory.byID[0];
     this.pet = Monster.byID[0];
-    this.resetSkillCalcMap();
-    for (let i = 0; i < 3; i++) {
-      this.skillLevels[i] = {
-        skill: Skill.byID[0],
-        level: 1
-      };
+    this.skillCalcMap = new SkillCalcMap();
+  }
+
+  addStats(stats: Stat.Stats) {
+    for (let key in stats) {
+      this.stats[key] += stats[key];
     }
   }
 
-  resetSkillCalcMap() {
-    this.skillCalcMap.reset();
+  addElements(elements: Element.Elements) {
+    for (let key in elements) {
+      this.elements[key] += elements[key];
+    }
   }
 
-  addSkillCalcMap(skill: Skill.Skill) {
-    this.skillCalcMap.add(skill);
+  addSkills(skills: Skill.Skill[]) {
+    for (let skill of skills) {
+      this.skillCalcMap.add(skill);
+    }
   }
 
   updateStats() {
-    this.resetSkillCalcMap();
-
-    for (let skill of this.weapon.skills) {
-      this.addSkillCalcMap(skill);
+    this.stats = {};
+    for (let i = 0; i < Stat.StatID.NUM; i++) {
+      this.stats[i] = 0;
     }
 
-    for (let skill of this.armor.skills) {
-      this.addSkillCalcMap(skill);
+    this.elements = {};
+    for (let i = 0; i < Element.ElementID.NUM; i++) {
+      this.elements[i] = 0;
     }
 
-    for (let skill of this.shield.skills) {
-      this.addSkillCalcMap(skill);
+    this.weight = 0;
+
+    this.skillCalcMap.reset();
+    this.skillLevels = new Array(3);
+    for (let i = 0; i < this.skillLevels.length; i++) {
+      this.skillLevels[i] = {
+        skill: Skill.byID[0],
+        level: 1,
+      };
     }
 
-    for (let skill of this.accessory.skills) {
-      this.addSkillCalcMap(skill);
-    }
+    this.addStats(this.weapon.stats);
+    this.addElements(this.weapon.elements);
+    this.weight += this.weapon.weight;
+    this.addSkills(this.weapon.skills);
 
-    for (let skill of this.pet.skills) {
-      this.addSkillCalcMap(skill);
-    }
+    this.addStats(this.armor.stats);
+    this.addElements(this.armor.elements);
+    this.weight += this.armor.weight;
+    this.addSkills(this.armor.skills);
 
-    for (let skill of Combo.getSkills(this.weapon.id, this.armor.id)) {
-      this.addSkillCalcMap(skill);
-    }
+    this.addStats(this.shield.stats);
+    this.addElements(this.shield.elements);
+    this.weight += this.shield.weight;
+    this.addSkills(this.shield.skills);
+
+    this.addStats(this.accessory.stats);
+    this.addElements(this.accessory.elements);
+    this.weight += this.accessory.weight;
+    this.addSkills(this.accessory.skills);
+
+    this.addStats(this.pet.stats);
+    this.addElements(this.pet.elements);
+    this.addSkills(this.pet.skills);
+
+    this.addSkills(Combo.getSkills(this.weapon.id, this.armor.id));
 
     this.skillCalcMap.sort();
     let skillIndex = 0;
     for (let item of this.skillCalcMap.items) {
-      const {skill, level} = item;
+      const { skill, level } = item;
       if (skill.id === 0) {
         continue;
       }

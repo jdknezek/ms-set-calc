@@ -25,9 +25,11 @@ m.mount(document.body, {
       m(Pets.Pets, { calculator }),
       calculator.sets == null ? m('input[type=button]', {
         value: `Generate ${calculator.countPossibleSets()} sets`,
-        onclick: (e: any) => calculator.getSets()
-      }) : `Found ${calculator.sets.length}/${calculator.countPossibleSets()} sets in ${calculator.duration}ms`,
-      m(Sets.Sets, { calculator }),
+        onclick: (_e: any) => calculator.calculateSets()
+      }) : [
+          `Found ${calculator.sets.length}/${calculator.countPossibleSets()} sets in ${calculator.duration}ms`,
+          m(Sets.Sets, { calculator }),
+        ]
     ];
   }
 });

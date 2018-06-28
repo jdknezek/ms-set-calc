@@ -1,16 +1,27 @@
 import * as Data from "./Data";
+import * as Element from "./Element";
 import * as Skill from "./Skill";
+import * as Stat from "./Stat";
 
 export class Shield {
   id: number;
   name: string;
+  stats: Stat.Stats;
+  weight: number;
+  elements: Element.Elements;
   skills: Skill.Skill[];
   shopDistance: number;
 
   constructor(record: Data.Record) {
     this.id = +record.shieldId;
     this.name = record.nameEng;
-    this.skills = Skill.byIDs(record.skill1st2nd3rd);
+    this.stats = {
+      [Stat.StatID.DEF]: Data.parseInt(record.physicalElementalWeight, 0, 3) / 10,
+      [Stat.StatID.MEN]: Data.parseInt(record.physicalElementalWeight, 3, 3) / 10
+    };
+    this.weight = Data.parseInt(record.physicalElementalWeight, 6, 3);
+    this.elements = Element.decode(record.elm1st2nd3rd);
+    this.skills = Skill.decode(record.skill1st2nd3rd);
   }
 }
 

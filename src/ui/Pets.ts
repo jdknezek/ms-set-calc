@@ -6,7 +6,7 @@ export interface Attrs {
   calculator: Calculator.Calculator;
 }
 
-export interface State {
+interface State {
   search: string;
 }
 
@@ -30,6 +30,7 @@ export const Pets: m.Component<Attrs, State> = {
           } else {
             calculator.collection.pets = [];
           }
+          calculator.collection.save();
           calculator.invalidatePets();
         },
       }, 'All'),

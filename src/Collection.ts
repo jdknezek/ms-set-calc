@@ -38,11 +38,11 @@ export class Collection {
   pets: Monster.Monster[];
 
   constructor() {
-    this.weapons = [];
-    this.armors = [];
-    this.shields = [];
-    this.accessories = [];
-    this.pets = [];
+    this.weapons = Weapon.byID.slice(1);
+    this.armors = Armor.byID.slice(1);
+    this.shields = Shield.byID.slice(1);
+    this.accessories = Accessory.byID.slice(1);
+    this.pets = Monster.byID.slice(1);
   }
 
   getEquipments(equipment: Equipment): Equipment[] {

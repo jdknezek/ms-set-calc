@@ -21,11 +21,14 @@ export function parseText(text: string) {
     );
 }
 
-export function parseID(ids: string, index: number) {
-  const start = 1 + index * 3;
-  return +ids.slice(start, start + 3);
+export function parseInt(encoded: string, start: number, length: number) {
+  return +encoded.slice(++start, start + length);
 }
 
-export function parseIDs(ids: string) {
-  return [0, 1, 2].map(index => parseID(ids, index));
+export function parseInts(encoded: string, length: number) {
+  const ints = [];
+  for (let start = 0; start < encoded.length; start += length) {
+    ints.push(parseInt(encoded, start, length));
+  }
+  return ints;
 }

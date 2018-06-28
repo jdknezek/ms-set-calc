@@ -1,6 +1,6 @@
 {
   "name": "ms-set-calc",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "dependencies": {
     "@types/mithril": "^1.1.12",
     "@types/node": "^10.3.5",

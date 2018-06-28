@@ -58,8 +58,12 @@ export const byName = byID.reduce((byName, skill) => {
   return byName;
 }, {} as { [name: string]: Skill });
 
-export function byIDs(ids: string) {
-  return Data.parseIDs(ids)
+export function parseIDs(ids: string) {
+  return Data.parseInts(ids, 3);
+}
+
+export function decode(ids: string) {
+  return parseIDs(ids)
     .filter(id => id !== 0)
     .map(id => byID[id]);
 }
