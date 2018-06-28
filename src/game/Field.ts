@@ -4,7 +4,6 @@ import * as Monster from "./Monster";
 class Field {
   distance: number;
   monsters: Monster.Monster[];
-  boss: Monster.Monster;
 
   constructor(record: Data.Record) {
     this.distance = +record.startDistance;
@@ -12,6 +11,11 @@ class Field {
       .concat(Data.parseInts(record.encount4th5thBoss, 3))
       .filter(id => id !== 0)
       .map(id => Monster.byID[id]);
+
+    const bossID = Data.parseInt(record.encount4th5thBoss, 6, 3);
+    if (bossID !== 0) {
+      Monster.byID[bossID].boss = true;
+    }
   }
 }
 
@@ -25,10 +29,6 @@ export function populateDistances() {
 
     for (let monster of field.monsters) {
       monster.distance = field.distance;
-    }
-
-    if (field.monsters.length === 6) {
-      field.monsters[5].boss = true;
     }
   }
 }
