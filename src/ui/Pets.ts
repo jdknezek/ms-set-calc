@@ -1,5 +1,6 @@
 import * as Calculator from "../Calculator";
 import * as Monster from "../game/Monster";
+import * as Popup from "./Popup";
 import m from "mithril";
 
 export interface Attrs {
@@ -35,7 +36,8 @@ export const Pets: m.Component<Attrs, State> = {
         },
       }, 'All'),
       m('br'),
-      monsters.map(monster => m('span', {
+      monsters.map(monster => m(Popup.Name, {
+        data: { equipment: monster },
         class: `tag ${calculator.collection.has(monster) ? 'collected' : ''} ${calculator.filter.filterEquipment(monster) ? 'contributing' : ''}`,
         onclick: (_e: any) => {
           if (calculator.collection.has(monster)) calculator.collection.remove(monster)
@@ -43,9 +45,7 @@ export const Pets: m.Component<Attrs, State> = {
           calculator.collection.save();
           calculator.invalidatePets();
         }
-      },
-        monster.name
-      ))
+      }))
     );
   }
 }

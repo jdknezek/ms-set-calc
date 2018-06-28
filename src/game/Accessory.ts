@@ -25,6 +25,10 @@ export class Accessory {
     this.info = record.infoEng || undefined;
     this.droppedBy = [];
   }
+
+  toString() {
+    return this.name;
+  }
 }
 
 export const byID = Data.parseText(

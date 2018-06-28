@@ -3,11 +3,12 @@ import * as Armors from "./ui/Armors";
 import * as Calculator from "./Calculator";
 import * as Collection from "./Collection";
 import * as Pets from "./ui/Pets";
+import * as Popup from "./ui/Popup";
 import * as Sets from "./ui/Sets";
 import * as Shields from "./ui/Shields";
 import * as Skills from "./ui/Skills";
 import * as Weapons from "./ui/Weapons";
-import m from 'mithril';
+import m from "mithril";
 
 const collection = Collection.load();
 collection.save();
@@ -18,6 +19,7 @@ m.mount(document.body, {
   view() {
     return [
       m(Skills.Skills, { calculator }),
+      m(Popup.Popup),
       m(Weapons.Weapons, { calculator }),
       m(Armors.Armors, { calculator }),
       m(Shields.Shields, { calculator }),

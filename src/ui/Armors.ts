@@ -1,5 +1,6 @@
 import * as Armor from "../game/Armor";
 import * as Calculator from "../Calculator";
+import * as Popup from "./Popup";
 import m from "mithril";
 
 export interface Attrs {
@@ -35,17 +36,16 @@ export const Armors: m.Component<Attrs, State> = {
         },
       }, 'All'),
       m('br'),
-      armors.map(armor => m('span', {
+      armors.map(armor => m(Popup.Name, {
+        data: { equipment: armor },
         class: `tag ${calculator.collection.has(armor) ? 'collected' : ''} ${calculator.filter.filterEquipment(armor) ? 'contributing' : ''}`,
         onclick: (_e: any) => {
           if (calculator.collection.has(armor)) calculator.collection.remove(armor)
           else calculator.collection.add(armor);
           calculator.collection.save();
           calculator.invalidateArmors();
-        }
-      },
-        armor.name
-      ))
+        },
+      }))
     );
   }
 }

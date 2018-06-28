@@ -15,6 +15,22 @@ import * as Weapon from "./game/Weapon";
 Field.populateDistances();
 Shop.populateDistances();
 
+for (let weapon of Weapon.byID) {
+  weapon.droppedBy.sort((a, b) => a.distance - b.distance)
+}
+
+for (let armor of Armor.byID) {
+  armor.droppedBy.sort((a, b) => a.distance - b.distance)
+}
+
+for (let shield of Shield.byID) {
+  shield.droppedBy.sort((a, b) => a.distance - b.distance)
+}
+
+for (let accessory of Accessory.byID) {
+  accessory.droppedBy.sort((a, b) => a.distance - b.distance)
+}
+
 export interface Set {
   weapon: Weapon.Weapon;
   armor: Armor.Armor;

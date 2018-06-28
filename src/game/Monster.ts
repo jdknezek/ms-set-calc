@@ -19,6 +19,7 @@ export class Monster {
   shield: Shield.Shield;
   accessory: Accessory.Accessory;
   distance: number;
+  boss: boolean;
 
   constructor(record: Data.Record) {
     this.id = +record.monsterId;
@@ -35,6 +36,11 @@ export class Monster {
     this.shield.droppedBy.push(this);
     this.accessory = Accessory.byID[Data.parseInt(record.dropAceGemTmp, 0, 3)];
     this.accessory.droppedBy.push(this);
+    this.boss = false;
+  }
+
+  toString() {
+    return `${this.name}${this.boss ? ' (BOSS)' : ''}`;
   }
 }
 

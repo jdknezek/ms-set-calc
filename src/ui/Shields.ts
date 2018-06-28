@@ -1,4 +1,5 @@
 import * as Calculator from "../Calculator";
+import * as Popup from "./Popup";
 import * as Shield from "../game/Shield";
 import m from "mithril";
 
@@ -35,7 +36,8 @@ export const Shields: m.Component<Attrs, State> = {
         },
       }, 'All'),
       m('br'),
-      shields.map(shield => m('span', {
+      shields.map(shield => m(Popup.Name, {
+        data: { equipment: shield },
         class: `tag ${calculator.collection.has(shield) ? 'collected' : ''} ${calculator.filter.filterEquipment(shield) ? 'contributing' : ''}`,
         onclick: (_e: any) => {
           if (calculator.collection.has(shield)) calculator.collection.remove(shield)
@@ -43,9 +45,7 @@ export const Shields: m.Component<Attrs, State> = {
           calculator.collection.save();
           calculator.invalidateShields();
         }
-      },
-        shield.name
-      ))
+      }))
     );
   }
 }

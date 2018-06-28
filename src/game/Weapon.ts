@@ -26,6 +26,10 @@ export class Weapon {
     this.skills = Skill.decode(record.skill1st2nd3rd);
     this.droppedBy = [];
   }
+
+  toString() {
+    return this.name;
+  }
 }
 
 export const byID = Data.parseText(

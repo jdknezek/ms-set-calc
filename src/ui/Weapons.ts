@@ -1,4 +1,5 @@
 import * as Calculator from "../Calculator";
+import * as Popup from "./Popup";
 import * as Weapon from "../game/Weapon";
 import m from "mithril";
 
@@ -32,10 +33,11 @@ export const Weapons: m.Component<Attrs, State> = {
           }
           calculator.collection.save();
           calculator.invalidateWeapons();
-        },
+        }
       }, 'All'),
       m('br'),
-      weapons.map(weapon => m('span', {
+      weapons.map(weapon => m(Popup.Name, {
+        data: {equipment: weapon},
         class: `tag ${calculator.collection.has(weapon) ? 'collected' : ''} ${calculator.filter.filterEquipment(weapon) ? 'contributing' : ''}`,
         onclick: (_e: any) => {
           if (calculator.collection.has(weapon)) calculator.collection.remove(weapon)
@@ -43,9 +45,7 @@ export const Weapons: m.Component<Attrs, State> = {
           calculator.collection.save();
           calculator.invalidateWeapons();
         }
-      },
-        weapon.name
-      ))
+      }))
     );
   }
 }

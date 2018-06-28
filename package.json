@@ -1,11 +1,12 @@
 {
   "name": "ms-set-calc",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "dependencies": {
     "@types/mithril": "^1.1.12",
     "@types/node": "^10.3.5",
     "mithril": "^1.1.6",
     "parcel": "^1.9.2",
+    "popper.js": "^1.14.3",
     "typescript": "^3.0.0-dev.20180619"
   },
   "browserslist": [

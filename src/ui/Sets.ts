@@ -1,5 +1,6 @@
 import * as Calculator from "../Calculator";
 import * as Element from "../game/Element";
+import * as Popup from "./Popup";
 import * as Stat from "../game/Stat";
 import m from "mithril";
 
@@ -13,7 +14,8 @@ enum Direction {
 }
 
 interface State {
-  sort: { column: Column, direction: Direction }
+  sort: { column: Column, direction: Direction };
+  page: number;
 }
 
 interface Comparer {
@@ -22,7 +24,7 @@ interface Comparer {
 
 interface Column {
   name: string;
-  get(set: Calculator.Set): any;
+  td(set: Calculator.Set): m.Vnode;
   compare(a: Calculator.Set, b: Calculator.Set): number;
 }
 
@@ -41,18 +43,22 @@ function compareNames(get: (set: Calculator.Set) => string): Comparer {
   }
 }
 
-function nameColumn(name: string, get: (set: Calculator.Set) => string): Column {
-  return { name, get: get, compare: compareNames(get) };
+function equipmentColumn(name: string, get: (set: Calculator.Set) => Popup.Equipment): Column {
+  return {
+    name,
+    td: set => m('td', m(Popup.Name, { data: { equipment: get(set) } })),
+    compare: compareNames(set => get(set).toString())
+  }
 }
 
 function skillColumn(index: number): Column {
-  const nameComparer = compareNames(set => set.skills[index].skill.name);
+  const compare = compareNames(set => set.skills[index].skill.name);
 
   return {
     name: `Skill ${index + 1}`,
-    get: set => set.skills[index].skill.toString(set.skills[index].level),
+    td: set => m('td.numeric', set.skills[index].skill.toString(set.skills[index].level)),
     compare: (a, b) => {
-      const cmp = nameComparer(a, b);
+      const cmp = compare(a, b);
       return cmp !== 0 ? cmp : a.skills[index].level - b.skills[index].level;
     }
   };
@@ -60,21 +66,30 @@ function skillColumn(index: number): Column {
 
 function statColumn(statID: Stat.StatID): Column {
   const get = (set: Calculator.Set) => set.stats[statID]
-  return { name: Stat.StatID[statID], get, compare: (a, b) => get(a) - get(b) };
+
+  return {
+    name: Stat.StatID[statID],
+    td: set => m('td.numeric', get(set)),
+    compare: (a, b) => get(a) - get(b)
+  };
 }
 
 function elementColumn(elementID: Element.ElementID): Column {
   const get = (set: Calculator.Set) => set.elements[elementID]
-  return { name: Element.ElementID[elementID], get, compare: (a, b) => get(a) - get(b) };
 
+  return {
+    name: Element.ElementID[elementID],
+    td: set => m('td.numeric', get(set)),
+    compare: (a, b) => get(a) - get(b)
+  };
 }
 
 const columns: Column[] = [
-  nameColumn('Weapon', set => set.weapon.name),
-  nameColumn('Armor', set => set.armor.name),
-  nameColumn('Shield', set => set.shield.name),
-  nameColumn('Accessory', set => set.accessory.name),
-  nameColumn('Pet', set => set.pet.name),
+  equipmentColumn('Weapon', set => set.weapon),
+  equipmentColumn('Armor', set => set.armor),
+  equipmentColumn('Shield', set => set.shield),
+  equipmentColumn('Accessory', set => set.accessory),
+  equipmentColumn('Pet', set => set.pet),
   skillColumn(0),
   skillColumn(1),
   skillColumn(2),
@@ -84,7 +99,7 @@ const columns: Column[] = [
   statColumn(Stat.StatID.MEN),
   statColumn(Stat.StatID.SPD),
   statColumn(Stat.StatID.LUK),
-  { name: 'WGT', get: set => set.weight, compare: (a, b) => a.weight - b.weight },
+  { name: 'WGT', td: set => m('td.numeric', set.weight), compare: (a, b) => a.weight - b.weight },
   elementColumn(Element.ElementID.FIRE),
   elementColumn(Element.ElementID.WATER),
   elementColumn(Element.ElementID.LEAF),
@@ -100,22 +115,52 @@ export const Sets: m.Component<Attrs, State> = {
   view({ attrs: { calculator }, state }) {
     const sets = calculator.getSets();
 
-    return m('table',
-      m('thead', m('tr', columns.map(column => m('th', {
-        onclick: (_e: any) => {
-          if (state.sort == null || state.sort.column !== column) {
-            state.sort = { column, direction: Direction.Ascending };
-          } else if (state.sort.column === column) {
-            state.sort.direction = state.sort.direction === Direction.Ascending ? Direction.Descending : Direction.Ascending;
-          }
-          let { compare } = column;
-          if (state.sort.direction === Direction.Descending) {
-            compare = descending(compare);
-          }
-          sets.sort(compare);
-        },
-      }, column.name)))),
-      m('tbody', sets.map(set => m('tr', columns.map(column => m('td', column.get(set))))))
+    const start = (state.page || 0) * 100;
+    const end = Math.min(start + 100, sets.length);
+    const rows: m.Vnode[] = [];
+
+    for (let i = start; i < end; i++) {
+      const set = sets[i];
+      rows.push(m('tr', columns.map(column => column.td(set))));
+    }
+
+    return m('div.sets',
+      pagination(),
+      m('table',
+        m('thead', m('tr', columns.map(column => m('th', {
+          onclick: (_e: any) => {
+            if (state.sort == null || state.sort.column !== column) {
+              state.sort = { column, direction: Direction.Ascending };
+            } else if (state.sort.column === column) {
+              state.sort.direction = state.sort.direction === Direction.Ascending ? Direction.Descending : Direction.Ascending;
+            }
+            let { compare } = column;
+            if (state.sort.direction === Direction.Descending) {
+              compare = descending(compare);
+            }
+            sets.sort(compare);
+          },
+        }, column.name)))),
+        m('tbody', rows)
+      ),
+      pagination()
     );
+
+    function pagination() {
+      const pageCount = Math.ceil(sets.length / 100);
+      const pages: m.Vnode[] = [];
+
+      for (let i = 0; i < pageCount; i++) {
+        const page = i;
+        pages.push(m(`option${state.page === i ? '[selected]' : ''}`, i + 1))
+      }
+
+      return m('div.pagination',
+        'Page: ',
+        m('select', {
+          onchange: m.withAttr('selectedIndex', (selectedIndex: number) => state.page = selectedIndex)
+        }, pages)
+      );
+    }
   }
 }

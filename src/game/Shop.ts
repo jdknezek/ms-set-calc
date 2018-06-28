@@ -111,7 +111,7 @@ export function populateDistances() {
         }
         break;
       case ShopType.SHIELD:
-        for (let id of getArmorIDs(distance)) {
+        for (let id of getShieldIDs(distance)) {
           Shield.byID[id].shopDistance = distance;
         }
         break;
