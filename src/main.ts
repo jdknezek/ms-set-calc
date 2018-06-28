@@ -19,7 +19,6 @@ m.mount(document.body, {
   view() {
     return [
       m(Skills.Skills, { calculator }),
-      m(Popup.Popup),
       m(Weapons.Weapons, { calculator }),
       m(Armors.Armors, { calculator }),
       m(Shields.Shields, { calculator }),
@@ -31,7 +30,8 @@ m.mount(document.body, {
       }) : [
           `Found ${calculator.sets.length}/${calculator.countPossibleSets()} sets in ${calculator.duration}ms`,
           m(Sets.Sets, { calculator }),
-        ]
+        ],
+      m(Popup.Popup)
     ];
   }
 });

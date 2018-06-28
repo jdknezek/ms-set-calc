@@ -9,11 +9,9 @@ class Field {
   constructor(record: Data.Record) {
     this.distance = +record.startDistance;
     this.monsters = Data.parseInts(record.encount1st2nd3rd, 3)
-      .concat(Data.parseInts(record.encount4th5thBoss, 2))
+      .concat(Data.parseInts(record.encount4th5thBoss, 3))
       .filter(id => id !== 0)
       .map(id => Monster.byID[id]);
-    this.boss = Monster.byID[Data.parseInt(record.encount4th5thBoss, 6, 3)];
-    if (this.boss.id !== 0) this.boss.boss = true;
   }
 }
 
@@ -29,8 +27,8 @@ export function populateDistances() {
       monster.distance = field.distance;
     }
 
-    if (field.boss.id !== 0) {
-      field.boss.distance = field.distance;
+    if (field.monsters.length === 6) {
+      field.monsters[5].boss = true;
     }
   }
 }

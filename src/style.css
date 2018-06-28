@@ -54,7 +54,7 @@ td.numeric {
 }
 
 .popup {
-  display: none;
+  visibility: hidden;
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 0.5em;
