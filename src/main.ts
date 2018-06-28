@@ -18,6 +18,7 @@ const calculator = new Calculator.Calculator(collection);
 m.mount(document.body, {
   view() {
     return [
+      m(Popup.Popup),
       m(Skills.Skills, { calculator }),
       m(Weapons.Weapons, { calculator }),
       m(Armors.Armors, { calculator }),
@@ -30,8 +31,7 @@ m.mount(document.body, {
       }) : [
           `Found ${calculator.sets.length}/${calculator.countPossibleSets()} sets in ${calculator.duration}ms`,
           m(Sets.Sets, { calculator }),
-        ],
-      m(Popup.Popup)
+        ]
     ];
   }
 });
