@@ -3,13 +3,14 @@ import * as Monster from "./Monster";
 
 class Field {
   distance: number;
-  monsterIDs: number[];
+  monsters: Monster.Monster[];
 
   constructor(record: Data.Record) {
     this.distance = +record.startDistance;
-    this.monsterIDs = Data.parseInts(record.encount1st2nd3rd, 3)
+    this.monsters = Data.parseInts(record.encount1st2nd3rd, 3)
       .concat(Data.parseInts(record.encount4th5thBoss, 3))
-      .filter(id => id !== 0);
+      .filter(id => id !== 0)
+      .map(id => Monster.byID[id]);
   }
 }
 
@@ -18,9 +19,11 @@ export const byDistance = Data.parseText(
 ).map(record => new Field(record));
 
 export function populateDistances() {
-  for (let field of byDistance) {
-    for (let monsterID of field.monsterIDs) {
-      Monster.byID[monsterID].distance = field.distance;
+  for (let i = byDistance.length - 1; i >= 0; i--) {
+    const field = byDistance[i];
+
+    for (let monster of field.monsters) {
+      monster.distance = field.distance;
     }
   }
 }

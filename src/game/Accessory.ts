@@ -13,7 +13,7 @@ export class Accessory {
   skills: Skill.Skill[];
   info: string | undefined;
   shopDistance: number;
-  droppdBy: Monster.Monster[];
+  droppedBy: Monster.Monster[];
 
   constructor(record: Data.Record) {
     this.id = +record.accessoryId;
@@ -23,6 +23,7 @@ export class Accessory {
     this.elements = Element.decode(record.elm1st2nd3rd);
     this.skills = Skill.decode(record.skill1st2nd3rd);
     this.info = record.infoEng || undefined;
+    this.droppedBy = [];
   }
 }
 

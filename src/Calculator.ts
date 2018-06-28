@@ -2,13 +2,18 @@ import * as Accessory from "./game/Accessory";
 import * as Armor from "./game/Armor";
 import * as Collection from "./Collection";
 import * as Element from "./game/Element";
+import * as Field from "./game/Field";
 import * as Monster from "./game/Monster";
 import * as Shield from "./game/Shield";
+import * as Shop from "./game/Shop";
 import * as Skill from "./game/Skill";
 import * as SkillFilter from "./SkillFilter";
 import * as Stat from "./game/Stat";
 import * as Status from "./game/Status";
 import * as Weapon from "./game/Weapon";
+
+Field.populateDistances();
+Shop.populateDistances();
 
 export interface Set {
   weapon: Weapon.Weapon;

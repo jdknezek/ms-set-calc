@@ -24,6 +24,7 @@ export class Armor {
     this.weight = Data.parseInt(record.physicalElementalWeight, 6, 3);
     this.elements = Element.decode(record.elm1st2nd3rd);
     this.skills = Skill.decode(record.skill1st2nd3rd);
+    this.droppedBy = [];
   }
 }
 

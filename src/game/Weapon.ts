@@ -1,5 +1,6 @@
 import * as Data from "./Data";
 import * as Element from "./Element";
+import * as Monster from "./Monster";
 import * as Skill from "./Skill";
 import * as Stat from "./Stat";
 
@@ -11,6 +12,7 @@ export class Weapon {
   elements: Element.Elements;
   skills: Skill.Skill[];
   shopDistance: number;
+  droppedBy: Monster.Monster[];
 
   constructor(record: Data.Record) {
     this.id = +record.weaponId;
@@ -22,6 +24,7 @@ export class Weapon {
     this.weight = Data.parseInt(record.physicalElementalWeight, 6, 3);
     this.elements = Element.decode(record.elm1st2nd3rd);
     this.skills = Skill.decode(record.skill1st2nd3rd);
+    this.droppedBy = [];
   }
 }
 
