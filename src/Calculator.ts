@@ -169,8 +169,9 @@ export class Calculator {
             for (let pet of this.getPets()) {
               status.pet = pet;
 
-              status.updateStats();
+              status.updateSkills();
               if (this.filter.checkStatus(status)) {
+                status.updateStats();
                 this.sets.push(makeSet(status));
               }
             }

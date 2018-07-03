@@ -48,19 +48,7 @@ export class Status {
     }
   }
 
-  updateStats() {
-    this.stats = {};
-    for (let i = 0; i < Stat.StatID.NUM; i++) {
-      this.stats[i] = 0;
-    }
-
-    this.elements = {};
-    for (let i = 0; i < Element.ElementID.NUM; i++) {
-      this.elements[i] = 0;
-    }
-
-    this.weight = 0;
-
+  updateSkills() {
     this.skillCalcMap.reset();
     this.skillLevels = new Array(3);
     for (let i = 0; i < this.skillLevels.length; i++) {
@@ -70,30 +58,11 @@ export class Status {
       };
     }
 
-    this.addStats(this.weapon.stats);
-    this.addElements(this.weapon.elements);
-    this.weight += this.weapon.weight;
     this.addSkills(this.weapon.skills);
-
-    this.addStats(this.armor.stats);
-    this.addElements(this.armor.elements);
-    this.weight += this.armor.weight;
     this.addSkills(this.armor.skills);
-
-    this.addStats(this.shield.stats);
-    this.addElements(this.shield.elements);
-    this.weight += this.shield.weight;
     this.addSkills(this.shield.skills);
-
-    this.addStats(this.accessory.stats);
-    this.addElements(this.accessory.elements);
-    this.weight += this.accessory.weight;
     this.addSkills(this.accessory.skills);
-
-    this.addStats(this.pet.stats);
-    this.addElements(this.pet.elements);
     this.addSkills(this.pet.skills);
-
     this.addSkills(Combo.getSkills(this.weapon.id, this.armor.id));
 
     this.skillCalcMap.sort();
@@ -133,6 +102,39 @@ export class Status {
         ? -1
         : a.skill.id - b.skill.id
     );
+  }
+
+  updateStats() {
+    this.stats = {};
+    for (let i = 0; i < Stat.StatID.NUM; i++) {
+      this.stats[i] = 0;
+    }
+
+    this.elements = {};
+    for (let i = 0; i < Element.ElementID.NUM; i++) {
+      this.elements[i] = 0;
+    }
+
+    this.weight = 0;
+
+    this.addStats(this.weapon.stats);
+    this.addElements(this.weapon.elements);
+    this.weight += this.weapon.weight;
+
+    this.addStats(this.armor.stats);
+    this.addElements(this.armor.elements);
+    this.weight += this.armor.weight;
+
+    this.addStats(this.shield.stats);
+    this.addElements(this.shield.elements);
+    this.weight += this.shield.weight;
+
+    this.addStats(this.accessory.stats);
+    this.addElements(this.accessory.elements);
+    this.weight += this.accessory.weight;
+
+    this.addStats(this.pet.stats);
+    this.addElements(this.pet.elements);
   }
 }
 
