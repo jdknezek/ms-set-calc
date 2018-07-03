@@ -1,10 +1,16 @@
+import * as Element from "../game/Element";
 import * as Monster from "../game/Monster";
+import * as Skill from "../game/Skill";
+import * as Stat from "../game/Stat";
 import m from "mithril";
 import Popper from "popper.js";
 
 export interface Equipment {
   id: number;
   toString(): string;
+  stats: Stat.Stats;
+  elements: Element.Elements;
+  skills: Skill.Skill[];
   shopDistance?: number;
   droppedBy?: Monster.Monster[];
   distance?: number;
@@ -26,24 +32,50 @@ export const Popup: m.Component<{}, State> = {
   view({state: {equipment}}) {
     return m('div.popup', equipment && equipment.id !== 0 && [
       m('div.popup-title', equipment.toString()),
-      equipment instanceof Monster.Monster ? [
-        equipment.distance && m('div', `Distance: ${equipment.distance}`),
-        m('div', `Rarity: ${equipment.rarity}`)
-      ] : [
-        equipment.shopDistance && m('div', `Shop: ${equipment.shopDistance}`),
-        equipment.droppedBy && equipment.droppedBy.length && m('table',
+      m('div.popup-body',
+        Object.keys(equipment.stats).length > 0 && m('table.stats',
           m('thead', m('tr',
-            m('th', 'Monster'),
-            m('th', 'Distance'),
-            m('th', 'Rarity'),
+            m('th', 'Stat'),
+            m('th', '/ Level'),
           )),
-          m('tbody', equipment.droppedBy.map(monster => m('tr',
-            m('td', monster.toString()),
-            m('td.numeric', monster.distance || ''),
-            m('td.numeric', monster.rarity)
+          m('tbody', Object.keys(equipment.stats).map((statID: any) => m('tr',
+            m('td', Stat.StatID[statID]),
+            m('td.numeric', equipment.stats[statID].toFixed(1)),
+          ))),
+        ),
+        Object.keys(equipment.elements).length > 0 && m('table.elements',
+          m('thead', m('tr',
+            m('th', 'Element'),
+            m('th', '%'),
+          )),
+          m('tbody', Object.keys(equipment.elements).map((elementID: any) => m('tr',
+            m('td', Element.ElementID[elementID]),
+            m('td.numeric', equipment.elements[elementID]),
           )))
-        )
-      ]
+        ),
+        m('table.skills',
+          m('thead', m('tr', m('th', 'Skills'))),
+          m('tbody', equipment.skills.map(skill => m('tr', m('td', skill.name))))
+        ),
+        equipment instanceof Monster.Monster ? [
+          equipment.distance && m('div', m('b', 'Distance: '), equipment.distance),
+          m('div', m('b', 'Spawn Ratio: '), equipment.spawnRatio)
+        ] : [
+          equipment.shopDistance && m('div', m('b', 'Shop: '), equipment.shopDistance),
+          equipment.droppedBy && equipment.droppedBy.length && m('table',
+            m('thead', m('tr',
+              m('th', 'Monster'),
+              m('th', 'Distance'),
+              m('th', 'Spawn Ratio'),
+            )),
+            m('tbody', equipment.droppedBy.map(monster => m('tr',
+              m('td', monster.toString()),
+              m('td.numeric', monster.distance || ''),
+              m('td.numeric', monster.spawnRatio)
+            )))
+          )
+        ]
+      )
     ]);
   }
 }
