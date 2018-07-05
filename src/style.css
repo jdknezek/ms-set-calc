@@ -47,6 +47,7 @@ th {
 
 td, th {
   padding: 0.25em;
+  border: 1px solid #ccc;
 }
 
 td.numeric {

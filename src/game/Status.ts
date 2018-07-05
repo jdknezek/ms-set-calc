@@ -27,7 +27,14 @@ export class Status {
     this.shield = Shield.byID[0];
     this.accessory = Accessory.byID[0];
     this.pet = Monster.byID[0];
+    this.stats = {};
+    this.elements = {};
     this.skillCalcMap = new SkillCalcMap();
+    this.skillLevels = [
+      {skill: Skill.byID[0], level: 1},
+      {skill: Skill.byID[0], level: 1},
+      {skill: Skill.byID[0], level: 1},
+    ];
   }
 
   addStats(stats: Stat.Stats) {
@@ -50,12 +57,9 @@ export class Status {
 
   updateSkills() {
     this.skillCalcMap.reset();
-    this.skillLevels = new Array(3);
     for (let i = 0; i < this.skillLevels.length; i++) {
-      this.skillLevels[i] = {
-        skill: Skill.byID[0],
-        level: 1,
-      };
+      this.skillLevels[i].skill = Skill.byID[0];
+      this.skillLevels[i].level = 1;
     }
 
     this.addSkills(this.weapon.skills);
@@ -105,12 +109,10 @@ export class Status {
   }
 
   updateStats() {
-    this.stats = {};
     for (let i = 0; i < Stat.StatID.NUM; i++) {
       this.stats[i] = 0;
     }
 
-    this.elements = {};
     for (let i = 0; i < Element.ElementID.NUM; i++) {
       this.elements[i] = 0;
     }

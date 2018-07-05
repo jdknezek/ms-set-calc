@@ -25,13 +25,16 @@ m.mount(document.body, {
       m(Shields.Shields, { calculator }),
       m(Accessories.Accessories, { calculator }),
       m(Pets.Pets, { calculator }),
-      calculator.sets == null ? m('input[type=button]', {
-        value: `Generate ${calculator.countPossibleSets()} sets`,
-        onclick: (_e: any) => calculator.calculateSets()
-      }) : [
-          `Found ${calculator.sets.length}/${calculator.countPossibleSets()} sets in ${calculator.duration}ms`,
-          m(Sets.Sets, { calculator }),
-        ]
+      m('div', m('input[type=button]', {
+        value: calculator.timeout == null ? `Generate ${calculator.countPossibleSets()} possible set${calculator.countPossibleSets() === 1 ? '' : 's'}` : 'Stop generation',
+        onclick: (_e: any) => calculator.timeout == null ? calculator.startCalculation() : calculator.stopCalculation()
+      })),
+      calculator.sets != null && [
+        calculator.timeout == null
+          ? `Found ${calculator.sets.length} set${calculator.sets.length === 1 ? '' : 's'} in ${calculator.duration} ms`
+          : `Generating sets: ${(100 * calculator.tried / calculator.countPossibleSets()).toFixed(1)}%`,
+        m(Sets.Sets, { calculator })
+      ]
     ];
   }
 });

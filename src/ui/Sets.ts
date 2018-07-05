@@ -69,7 +69,7 @@ function statColumn(statID: Stat.StatID): Column {
 
   return {
     name: Stat.StatID[statID],
-    td: set => m('td.numeric', get(set)),
+    td: set => m('td.numeric', get(set).toFixed(1)),
     compare: (a, b) => get(a) - get(b)
   };
 }

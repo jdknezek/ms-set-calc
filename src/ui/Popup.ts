@@ -59,19 +59,19 @@ export const Popup: m.Component<{}, State> = {
         ),
         equipment instanceof Monster.Monster ? [
           equipment.distance && m('div', m('b', 'Distance: '), equipment.distance),
-          m('div', m('b', 'Spawn Ratio: '), equipment.spawnRatio)
+          m('div', m('b', 'Spawn Rate: '), equipment.spawnRate)
         ] : [
           equipment.shopDistance && m('div', m('b', 'Shop: '), equipment.shopDistance),
           equipment.droppedBy && equipment.droppedBy.length && m('table',
             m('thead', m('tr',
               m('th', 'Monster'),
               m('th', 'Distance'),
-              m('th', 'Spawn Ratio'),
+              m('th', 'Spawn Rate'),
             )),
             m('tbody', equipment.droppedBy.map(monster => m('tr',
               m('td', monster.toString()),
               m('td.numeric', monster.distance || ''),
-              m('td.numeric', monster.spawnRatio)
+              m('td.numeric', monster.spawnRate)
             )))
           )
         ]

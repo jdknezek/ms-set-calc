@@ -11,6 +11,7 @@ import * as SkillFilter from "./SkillFilter";
 import * as Stat from "./game/Stat";
 import * as Status from "./game/Status";
 import * as Weapon from "./game/Weapon";
+import m from 'mithril';
 
 Field.populateDistances();
 Shop.populateDistances();
@@ -50,10 +51,10 @@ function makeSet(status: Status.Status): Set {
     shield: status.shield,
     accessory: status.accessory,
     pet: status.pet,
-    skills: status.skillLevels,
+    skills: status.skillLevels.map(({ skill, level }) => ({ skill, level })),
     weight: status.weight,
-    stats: status.stats,
-    elements: status.elements
+    stats: Object.assign({}, status.stats),
+    elements: Object.assign({}, status.elements)
   };
 }
 
@@ -68,6 +69,8 @@ export class Calculator {
   pets: Monster.Monster[] | null;
 
   sets: Set[] | null;
+  timeout: number | null;
+  tried: number;
   duration: number;
 
   constructor(collection: Collection.Collection) {
@@ -147,39 +150,92 @@ export class Calculator {
 
   getSets() {
     if (this.sets == null) {
-      this.calculateSets();
+      this.startCalculation();
     }
 
     return this.sets as Set[];
   }
 
-  calculateSets() {
+  generateSets: () => Iterator<GenerationState>;
+
+  startCalculation() {
+    if (this.timeout != null) return;
+
     this.sets = [];
-    const status = new Status.Status();
-
+    this.tried = 0;
     const start = new Date();
-    for (let weapon of this.getWeapons()) {
-      status.weapon = weapon;
-      for (let armor of this.getArmors()) {
-        status.armor = armor;
-        for (let shield of this.getShields()) {
-          status.shield = shield;
-          for (let accessory of this.getAccessories()) {
-            status.accessory = accessory;
-            for (let pet of this.getPets()) {
-              status.pet = pet;
 
-              status.updateSkills();
-              if (this.filter.checkStatus(status)) {
-                status.updateStats();
-                this.sets.push(makeSet(status));
-              }
+    const generator = this.generateSets();
+
+    const generateBatch = () => {
+      const { done, value } = generator.next();
+      if (value) {
+        this.tried = value.tried;
+        if (this.sets && value.batch.length > 0) this.sets.push(...value.batch);
+      }
+
+      this.duration = new Date().valueOf() - start.valueOf();
+      m.redraw();
+      if (done) {
+        this.stopCalculation();
+      } else {
+        this.timeout = setTimeout(generateBatch, 0);
+      }
+    }
+
+    this.timeout = setTimeout(generateBatch, 0);
+  }
+
+  stopCalculation() {
+    if (this.timeout == null) return;
+    clearTimeout(this.timeout);
+    this.timeout = null;
+    m.redraw();
+  }
+}
+
+type GenerationState = {
+  tried: number;
+  batch: Set[];
+}
+
+Calculator.prototype.generateSets = function* () {
+  const status = new Status.Status();
+  const state: GenerationState = { tried: 0, batch: [] };
+  let lastSample = performance.now();
+
+  for (let weapon of this.getWeapons()) {
+    status.weapon = weapon;
+    for (let armor of this.getArmors()) {
+      status.armor = armor;
+      for (let shield of this.getShields()) {
+        status.shield = shield;
+        for (let accessory of this.getAccessories()) {
+          status.accessory = accessory;
+          for (let pet of this.getPets()) {
+            status.pet = pet;
+
+            status.updateSkills();
+            if (this.filter.checkStatus(status)) {
+              status.updateStats();
+              state.batch.push(makeSet(status));
+            }
+
+            state.tried++;
+            const now = performance.now();
+            const elapsed = now.valueOf() - lastSample.valueOf();
+            if (elapsed >= 500) {
+              lastSample = now;
+              yield state;
+              state.batch = [];
             }
           }
         }
       }
     }
+  }
 
-    this.duration = new Date().valueOf() - start.valueOf();
+  if (state.batch.length > 0) {
+    yield state;
   }
 }

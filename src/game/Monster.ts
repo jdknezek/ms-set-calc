@@ -10,7 +10,7 @@ import * as Weapon from "./Weapon";
 export class Monster {
   id: number;
   name: string;
-  spawnRatio: number;
+  spawnRate: number;
   stats: Stat.Stats;
   elements: Element.Elements;
   skills: Skill.Skill[];
@@ -24,7 +24,7 @@ export class Monster {
   constructor(record: Data.Record) {
     this.id = +record.monsterId;
     this.name = record.nameEng;
-    this.spawnRatio = Data.parseInt(record.lukExpRare, 6, 3);
+    this.spawnRate = Data.parseInt(record.lukExpRare, 6, 3);
     this.stats = Stat.decode(record.petStatus1st2nd3rd);
     this.elements = Element.decode(record.petElm1st2nd3rd);
     this.skills = Skill.decode(record.petSkill1st2nd3rd);
