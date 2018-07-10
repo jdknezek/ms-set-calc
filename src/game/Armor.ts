@@ -18,8 +18,8 @@ export class Armor {
     this.id = +record.armorId;
     this.name = record.nameEng;
     this.stats = {
-      [Stat.StatID.DEF]: Data.parseInt(record.physicalElementalWeight, 0, 3) / 10,
-      [Stat.StatID.MEN]: Data.parseInt(record.physicalElementalWeight, 3, 3) / 10
+      [Stat.StatID.DEF]: Data.parseInt(record.physicalElementalWeight, 0, 3) * 0.1,
+      [Stat.StatID.MEN]: Data.parseInt(record.physicalElementalWeight, 3, 3) * 0.1
     };
     this.weight = Data.parseInt(record.physicalElementalWeight, 6, 3);
     this.elements = Element.decode(record.elm1st2nd3rd);

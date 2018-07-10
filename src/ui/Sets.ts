@@ -65,21 +65,21 @@ function skillColumn(index: number): Column {
 }
 
 function statColumn(statID: Stat.StatID): Column {
-  const get = (set: Calculator.Set) => set.stats[statID]
+  const get = (set: Calculator.Set) => set.stats[statID] + set.bonusStats[statID]
 
   return {
     name: Stat.StatID[statID],
-    td: set => m('td.numeric', get(set).toFixed(1)),
+    td: set => m('td.numeric', set.bonusStats[statID] === 0 ? get(set).toFixed(2) : m(`abbr[title=${set.stats[statID].toFixed(1)} ${set.bonusStats[statID] > 0 ? '+' : '-'} ${Math.abs(set.bonusStats[statID]).toFixed(2)}]`, get(set).toFixed(2))),
     compare: (a, b) => get(a) - get(b)
   };
 }
 
 function elementColumn(elementID: Element.ElementID): Column {
-  const get = (set: Calculator.Set) => set.elements[elementID]
+  const get = (set: Calculator.Set) => set.elements[elementID] + set.bonusElements[elementID]
 
   return {
     name: Element.ElementID[elementID],
-    td: set => m('td.numeric', get(set)),
+    td: set => m('td.numeric', set.bonusElements[elementID] === 0 ? get(set) : m(`abbr[title=${set.elements[elementID]} + ${set.bonusElements[elementID]}]`, get(set))),
     compare: (a, b) => get(a) - get(b)
   };
 }
@@ -96,6 +96,7 @@ const columns: Column[] = [
   statColumn(Stat.StatID.HP),
   statColumn(Stat.StatID.ATK),
   statColumn(Stat.StatID.DEF),
+  statColumn(Stat.StatID.INT),
   statColumn(Stat.StatID.MEN),
   statColumn(Stat.StatID.SPD),
   statColumn(Stat.StatID.LUK),

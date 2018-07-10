@@ -41,7 +41,9 @@ export interface Set {
   skills: Skill.SkillLevel[];
   weight: number,
   stats: Stat.Stats;
+  bonusStats: Stat.Stats;
   elements: Element.Elements;
+  bonusElements: Element.Elements;
 }
 
 function makeSet(status: Status.Status): Set {
@@ -54,7 +56,9 @@ function makeSet(status: Status.Status): Set {
     skills: status.skillLevels.map(({ skill, level }) => ({ skill, level })),
     weight: status.weight,
     stats: Object.assign({}, status.stats),
-    elements: Object.assign({}, status.elements)
+    bonusStats: Object.assign({}, status.bonusStats),
+    elements: Object.assign({}, status.elements),
+    bonusElements: Object.assign({}, status.bonusElements),
   };
 }
 
