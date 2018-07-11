@@ -10,16 +10,18 @@ import * as Skills from "./ui/Skills";
 import * as Weapons from "./ui/Weapons";
 import m from "mithril";
 
-const collection = Collection.load();
+let collection = Collection.load();
 collection.save();
 
-const calculator = new Calculator.Calculator(collection);
+let calculator = new Calculator.Calculator(collection);
 
 m.mount(document.body, {
   view() {
     return [
       m(Popup.Popup),
       m(Skills.Skills, { calculator }),
+      m('input[type=button][value=Export Collection]', { onclick: exportCollection }),
+      m('input[type=button][value=Import Collection]', { onclick: importCollection }),
       m(Weapons.Weapons, { calculator }),
       m(Armors.Armors, { calculator }),
       m(Shields.Shields, { calculator }),
@@ -38,3 +40,32 @@ m.mount(document.body, {
     ];
   }
 });
+
+function exportCollection() {
+  const textarea = document.createElement('textarea');
+  document.body.appendChild(textarea);
+  textarea.value = JSON.stringify(collection.toJSON());
+  textarea.select();
+  const success = document.execCommand('copy');
+  textarea.remove();
+  if (success) {
+    alert('Collection exported to clipboard.');
+  } else {
+    alert('Error exporting collection to clipboard.');
+  }
+}
+
+function importCollection() {
+  const json = prompt('Paste export below:');
+  if (!json) return;
+  try {
+    JSON.parse(json);
+  } catch (e) {
+    alert(`Error parsing export: ${e.message}`);
+    return;
+  }
+
+  localStorage.setItem('collection', json);
+  collection = Collection.load();
+  calculator = new Calculator.Calculator(collection);
+}
