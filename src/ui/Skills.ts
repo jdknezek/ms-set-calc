@@ -35,7 +35,6 @@ export const Skills: m.Component<Attrs> = {
           value: skillLevel.level,
           onchange: m.withAttr('value', value => {
             calculator.filter.skillLevels[index].level = +value;
-            calculator.invalidateSets();
           })
         })),
         m('td', skillLevel.skill.info),

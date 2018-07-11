@@ -82,33 +82,24 @@ export class Calculator {
     this.filter = new SkillFilter.Filter();
   }
 
-  invalidateSets() {
-    this.sets = null;
-  }
-
   invalidateWeapons() {
     this.weapons = null;
-    this.invalidateSets();
   }
 
   invalidateArmors() {
     this.armors = null;
-    this.invalidateSets();
   }
 
   invalidateShields() {
     this.shields = null;
-    this.invalidateSets();
   }
 
   invalidateAccessories() {
     this.accessories = null;
-    this.invalidateSets();
   }
 
   invalidatePets() {
     this.pets = null;
-    this.invalidateSets();
   }
 
   invalidateSkills() {
